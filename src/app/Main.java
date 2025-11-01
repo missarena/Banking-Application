@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         BankService bankService = new BankServiceImpl();
-        boolean running = true;
+       boolean running = true;
         System.out.println("Welcome to Console Bank");
         while (running) {
             System.out.println("""

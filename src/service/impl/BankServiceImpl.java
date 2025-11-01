@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class BankServiceImpl implements BankService {
+ public class BankServiceImpl implements BankService {
 
     private final AccountRepository accountRepository = new AccountRepository();
     private final TransactionRepository transactionRepository = new TransactionRepository();
@@ -76,8 +76,12 @@ public class BankServiceImpl implements BankService {
         Account account = accountRepository.findByNumber(accountNumber)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found: " + accountNumber));
         account.setBalance(account.getBalance() + amount);
-        Transaction transaction = new Transaction(account.getAccountNumber(),
-                amount, UUID.randomUUID().toString(), note, LocalDateTime.now(), Type.DEPOSIT);
+        Transaction transaction = new Transaction( account.getAccountNumber(),
+                UUID.randomUUID().toString(),
+                LocalDateTime.now(),
+                note,
+                amount,
+                Type.DEPOSIT);
         transactionRepository.add(transaction);
     }
 
@@ -89,8 +93,12 @@ public class BankServiceImpl implements BankService {
         if (account.getBalance().compareTo(amount) < 0)
             throw new InsufficientFundsException("Insufficient Balance");
         account.setBalance(account.getBalance() - amount);
-        Transaction transaction = new Transaction(account.getAccountNumber(),
-                amount, UUID.randomUUID().toString(), note, LocalDateTime.now(), Type.WITHDRAW);
+        Transaction transaction = new Transaction( account.getAccountNumber(),
+                UUID.randomUUID().toString(),
+                LocalDateTime.now(),
+                note,
+                amount,
+                Type.WITHDRAW);
         transactionRepository.add(transaction);
     }
 
@@ -110,12 +118,18 @@ public class BankServiceImpl implements BankService {
         to.setBalance(to.getBalance() + amount);
 
         transactionRepository.add(new Transaction(from.getAccountNumber(),
-                amount, UUID.randomUUID().toString(), note,
-                LocalDateTime.now(), Type.TRANSFER_OUT));
+                UUID.randomUUID().toString(),
+                LocalDateTime.now(),
+                note,
+                amount,
+                Type.TRANSFER_OUT));
 
         transactionRepository.add(new Transaction(to.getAccountNumber(),
-                amount, UUID.randomUUID().toString(), note,
-                LocalDateTime.now(), Type.TRANSFER_IN));
+                UUID.randomUUID().toString(),
+                LocalDateTime.now(),
+                note,
+                amount,
+                Type.TRANSFER_IN));
 
     }
 
